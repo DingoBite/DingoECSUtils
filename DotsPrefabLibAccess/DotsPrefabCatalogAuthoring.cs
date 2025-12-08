@@ -26,7 +26,11 @@ namespace DingoECSUtils.DotsPrefabLibAccess
         public string FullPrefix => $"{_catalogPath}/{_keysPrefix}";
         public bool AddPrefabBeforeTag => _addPrefabNamesBeforeTag;
         
-        [Button]
+#if VINSPECTOR_EXISTS
+        [VInspector.Button]
+#else
+        [NaughtyAttributes.Button]
+#endif
         private void PopulateUniqueChildren()
         {
 #if UNITY_EDITOR
@@ -61,7 +65,11 @@ namespace DingoECSUtils.DotsPrefabLibAccess
 #endif
         }
 
-        [Button]
+#if VINSPECTOR_EXISTS
+        [VInspector.Button]
+#else
+        [NaughtyAttributes.Button]
+#endif
         private void PopulatePrefabStructure()
         {
 #if UNITY_EDITOR
