@@ -10,6 +10,7 @@ namespace DingoECSUtils.Utils
         [SerializeField] private string _worldName = "DiceGame World";
         [SerializeField] private SubScene _entryPointSubScene;
         [SerializeField] private bool _autoStart;
+        private bool _ownsMainWorld;
 
         public World Main { get; private set; }
 
@@ -28,6 +29,7 @@ namespace DingoECSUtils.Utils
                 World.DefaultGameObjectInjectionWorld.Dispose();
             }
             Main = new World(_worldName);
+            _ownsMainWorld = true;
             World.DefaultGameObjectInjectionWorld = Main;
             
             var systems = DefaultWorldInitialization.GetAllSystems(WorldSystemFilterFlags.Default);
@@ -35,6 +37,7 @@ namespace DingoECSUtils.Utils
             ScriptBehaviourUpdateOrder.AppendWorldToCurrentPlayerLoop(Main);
 #else
             Main = World.DefaultGameObjectInjectionWorld;
+            _ownsMainWorld = false;
 #endif
             LoadEntryPointSubScene();
         }
@@ -46,6 +49,7 @@ namespace DingoECSUtils.Utils
         }
         
         private void OnDestroy() => Teardown();
+        public void Shutdown() => Teardown();
 
 #if UNITY_EDITOR
         private void OnEnable() => EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
@@ -61,13 +65,14 @@ namespace DingoECSUtils.Utils
         private void Teardown()
         {
 #if UNITY_DISABLE_AUTOMATIC_SYSTEM_BOOTSTRAP_RUNTIME_WORLD
-            if (Main != null && Main.IsCreated)
+            if (_ownsMainWorld && Main != null && Main.IsCreated)
             {
                 ScriptBehaviourUpdateOrder.RemoveWorldFromCurrentPlayerLoop(Main);
                 Main.Dispose();
                 if (World.DefaultGameObjectInjectionWorld == Main)
                     World.DefaultGameObjectInjectionWorld = null;
                 Main = null;
+                _ownsMainWorld = false;
             }
 #endif
         }
