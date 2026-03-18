@@ -19,7 +19,6 @@ namespace DingoECSUtils.DotsPrefabLibAccess
         public string Name;
         public SubScene Scene;
     }
-#endif
 
     public class BuiltinSceneCatalogBaker : Baker<BuiltinSceneCatalogAuthoring>
     {
@@ -39,4 +38,5 @@ namespace DingoECSUtils.DotsPrefabLibAccess
             }
         }
     }
+#endif
 }

@@ -128,6 +128,7 @@ namespace DingoECSUtils.DotsPrefabLibAccess
             return sb.ToString();
         }
 
+#if UNITY_EDITOR
         private void OnValidate()
         {
             _afterBakeState.Clear();
@@ -145,5 +146,6 @@ namespace DingoECSUtils.DotsPrefabLibAccess
                 _afterBakeStateKeys.Sort();
             }
         }
+#endif
     }
 }

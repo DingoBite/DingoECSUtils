@@ -12,6 +12,7 @@ namespace DingoECSUtils.DotsPrefabLibAccess
         public EntityPrefabReference PrefabRef;
     }
     
+#if UNITY_EDITOR
     public sealed class DotsPrefabCatalogBaker : Baker<DotsPrefabCatalogAuthoring>
     {
         public override void Bake(DotsPrefabCatalogAuthoring authoring)
@@ -36,4 +37,6 @@ namespace DingoECSUtils.DotsPrefabLibAccess
             }
         }
     }
+#endif
+
 }
