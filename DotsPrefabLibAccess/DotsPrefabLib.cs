@@ -47,7 +47,7 @@ namespace DingoECSUtils.DotsPrefabLibAccess
             _world = externalDependencies.Get<DOTSWorlds>().Main;
             _em = _world.EntityManager;
 
-            _cfg = externalDependencies.Configs().Get<DotsPrefabLibConfig>();
+            _cfg = externalDependencies.Get<DotsPrefabLibConfig>();
 
             ReindexAllCatalogs();
             await PreloadAsync();
