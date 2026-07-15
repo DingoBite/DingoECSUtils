@@ -183,13 +183,14 @@ At runtime, gameplay systems do not need access to inspector dictionaries or aut
 
 ### `BuiltinSceneCatalogAuthoring.cs`
 
-`BuiltinSceneCatalogAuthoring` is a lightweight authoring component for scene name -> scene asset mappings.
+`BuiltinSceneCatalogAuthoring` is a lightweight authoring component for scene name -> entity-scene-reference mappings.
 
 Implementation notes:
 
-- the serialized dictionary exists only under `#if UNITY_EDITOR`;
-- the dictionary type is `SerializedDictionary<string, SceneAsset>`;
-- runtime code never touches `SceneAsset` directly, only baked references.
+- the dictionary type is `SerializedDictionary<string, EntitySceneReference>`;
+- Unity's Entities property drawer still exposes each value as a `SceneAsset` picker in the Editor;
+- the serialized layout is identical in the Editor, Standalone Player, and Dedicated Server;
+- runtime code consumes the same build-safe reference type that is copied into the baked buffer.
 
 ### `BuiltinSceneCatalogBaker.cs`
 
@@ -198,7 +199,7 @@ Implementation notes:
 Each entry stores:
 
 - a string key in `FixedString128Bytes`;
-- an `EntitySceneReference` created from the scene asset.
+- the authored `EntitySceneReference` copied without an editor-only conversion step.
 
 This provides a stable human-readable scene addressing layer for ECS scene loading.
 

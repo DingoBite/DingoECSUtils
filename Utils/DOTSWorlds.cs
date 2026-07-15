@@ -1,6 +1,8 @@
 using Unity.Entities;
 using Unity.Scenes;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace DingoECSUtils.Utils
@@ -8,10 +10,13 @@ namespace DingoECSUtils.Utils
     public class DOTSWorlds : MonoBehaviour
     {
         [SerializeField] private string _worldName = "DiceGame World";
+#if UNITY_DISABLE_AUTOMATIC_SYSTEM_BOOTSTRAP_RUNTIME_WORLD
+        private bool _ownsMainWorld;
+#endif
         [SerializeField] private SubScene _entryPointSubScene;
         [SerializeField] private bool _autoStart;
-        private bool _ownsMainWorld;
 
+        public string WorldName => _worldName;
         public World Main { get; private set; }
 
         private void Start()
@@ -37,7 +42,6 @@ namespace DingoECSUtils.Utils
             ScriptBehaviourUpdateOrder.AppendWorldToCurrentPlayerLoop(Main);
 #else
             Main = World.DefaultGameObjectInjectionWorld;
-            _ownsMainWorld = false;
 #endif
             LoadEntryPointSubScene();
         }

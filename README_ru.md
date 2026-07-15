@@ -183,13 +183,14 @@ Editor-tooling:
 
 ### `BuiltinSceneCatalogAuthoring.cs`
 
-`BuiltinSceneCatalogAuthoring` — лёгкий authoring-компонент для отображения "имя сцены -> scene asset".
+`BuiltinSceneCatalogAuthoring` — лёгкий authoring-компонент для отображения "имя сцены -> ссылка на entity-сцену".
 
 Особенности реализации:
 
-- сериализуемый словарь существует только под `#if UNITY_EDITOR`;
-- тип словаря — `SerializedDictionary<string, SceneAsset>`;
-- runtime-код больше не работает напрямую с `SceneAsset`, а использует только запечённые ссылки.
+- тип словаря — `SerializedDictionary<string, EntitySceneReference>`;
+- стандартный property drawer Entities по-прежнему показывает значение как picker `SceneAsset` в Editor;
+- сериализуемая схема одинакова в Editor, Standalone Player и Dedicated Server;
+- runtime-код использует тот же build-safe тип ссылки, который копируется в запечённый буфер.
 
 ### `BuiltinSceneCatalogBaker.cs`
 
@@ -198,7 +199,7 @@ Editor-tooling:
 Каждая запись содержит:
 
 - строковый ключ в `FixedString128Bytes`;
-- `EntitySceneReference`, созданный из scene asset.
+- authored `EntitySceneReference`, скопированный без editor-only преобразования.
 
 Это даёт стабильный человекочитаемый слой адресации сцен для ECS scene loading.
 

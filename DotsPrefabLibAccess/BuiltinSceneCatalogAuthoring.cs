@@ -1,17 +1,13 @@
 using AYellowpaper.SerializedCollections;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
+using Unity.Entities.Serialization;
 using UnityEngine;
 
 namespace DingoECSUtils.DotsPrefabLibAccess
 {
     public sealed class BuiltinSceneCatalogAuthoring : MonoBehaviour
     {
-#if UNITY_EDITOR
-        [SerializeField] private SerializedDictionary<string, SceneAsset> _scenes = new();
+        [SerializeField] private SerializedDictionary<string, EntitySceneReference> _scenes = new();
 
-        public SerializedDictionary<string, SceneAsset> Scenes => _scenes;
-#endif
+        public SerializedDictionary<string, EntitySceneReference> Scenes => _scenes;
     }
 }
